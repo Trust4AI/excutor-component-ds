@@ -7,7 +7,12 @@
 # OS generated files
 
 **/.DS_Store
+**/__pycache__/
 
 # Environment configuration
 
 **/.env
+
+# Results and allure reports
+/src/results/allure_report/*
+/src/results/*
