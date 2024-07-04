@@ -14,5 +14,7 @@
 **/.env
 
 # Results and allure reports
+
 /src/results/allure_report/*
 /src/results/*
+/src/results_experiment/*

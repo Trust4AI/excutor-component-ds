@@ -18,7 +18,11 @@ def read_template_path(template_path: str):
 
     for file in list_dir:
         if file.endswith('.json'):
-            result.extend(create_template_json(os.path.join(template_path, file)))
+            t = create_template_json(os.path.join(template_path, file))
+            if type(t) is list:
+                result.extend(t)
+            else:
+                result.append(t)
 
     return result
 

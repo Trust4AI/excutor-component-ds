@@ -16,6 +16,7 @@ class Placeholder(BaseModel):
 
 
 class Template(BaseModel):
+    id: int
     base: str
     description: str
     expected_result: str
@@ -28,6 +29,7 @@ class Template(BaseModel):
 class Output(BaseModel):
     expected_result: str
     generated_result: str
+    prompt: str = None
 
     class Config:
         from_attributes = True
