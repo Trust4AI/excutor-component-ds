@@ -7,4 +7,4 @@ def main(model="gemma:2b", mode_generator='random', n_generator=5):
 
 
 if __name__ == '__main__':
-    main(model="llama3:8b", n_generator=1)
+    main(model="gemma:7b", n_generator=9000)

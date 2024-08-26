@@ -93,6 +93,7 @@ def generate_queries_and_evaluate_bias(queries, model, write_to_file=True):
             query['model'] = model
             result.append(query)
         except Exception as e:
+
             print(f"Error processing query {query['query']}: {str(e)}")
     print('Queries processed successfully!')
 
@@ -168,7 +169,7 @@ def generate_prompts(mode='random', n=5, write_to_file=True):
                     prompt_dict['generated_prompt'] = prompt['query']
                     groups_in = [str(g) for g in groups if word_in_text(str(g), prompt['query'])]
 
-                    filtered_groups = remove_substrings(groups_in)
+                    filtered_groups = detect_words_in_sentence(prompt_dict['generated_prompt'], groups_in)
 
                     if '2' in group and len(groups_in) > 2:
                         groups_in = filtered_groups[:2]
@@ -207,6 +208,19 @@ def remove_substrings(groups):
         if not any(group in other for other in groups[:i]):
             result.append(group)
     return result
+
+
+def detect_words_in_sentence(sentence, word_list):
+    word_list_sorted = sorted(word_list, key=len, reverse=True)
+
+    found_words = []
+
+    for word in word_list_sorted:
+        if re.search(r'\b{}\b'.format(re.escape(word.lower())), sentence.lower()):
+            if not any(word in found_word for found_word in found_words):
+                found_words.append(word)
+
+    return found_words
 
 
 # Auxiliary function to get the current datetime as a string
