@@ -1,3 +1,5 @@
+import gc
+
 from core.schemas import create, schemas
 from generator_api import api as generator_api
 from evaluator_api import api as evaluator_api
@@ -6,6 +8,7 @@ from paths import *
 from tqdm import tqdm
 import re
 from datetime import datetime
+import concurrent.futures
 
 
 # Read templates from a given path
@@ -95,6 +98,53 @@ def generate_queries_and_evaluate_bias(queries, model, write_to_file=True):
         except Exception as e:
 
             print(f"Error processing query {query['query']}: {str(e)}")
+    print('Queries processed successfully!')
+
+    if write_to_file:
+        model_name = str(model).replace(':', '_')
+        file_name = f'results_{model_name}_{get_datetime_str()}.csv'
+        list_to_csv2(result, os.path.join(RESULTS_EXPERIMENT_PATH, file_name))
+
+    return result
+
+
+import concurrent.futures
+from tqdm import tqdm
+
+def process_query(query, model):
+    try:
+        prompt = query['generated_prompt']
+        expected_result = query['expected_result']
+        generated_result = generate_queries(prompt, model)
+        eval_tipe = query['template_type']
+        _result = evaluate_bias(generated_result['response'], expected_result, eval_tipe, prompt)
+        query['response'] = (generated_result['response'].replace('\n', ' ')
+                             .replace('\r', ' ').replace(';', ',').replace('\t', ' '))
+        query['result'] = _result
+        query['model'] = model
+        return query
+    except Exception as e:
+        print(f"Error processing query {query['query']}: {str(e)}")
+        return None
+
+
+def _generate_queries_and_evaluate_bias(queries, model, write_to_file=True, batch_size=1000):
+    result = []
+    print('Processing queries...')
+
+    # Procesar las consultas en lotes
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        for i in range(0, len(queries), batch_size):
+            batch = queries[i:i + batch_size]
+            futures = {executor.submit(process_query, query, model): query for query in batch}
+            for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures)):
+                query_result = future.result()
+                if query_result:
+                    result.append(query_result)
+
+            # Forzar la recolección de basura después de procesar cada lote
+            gc.collect()
+
     print('Queries processed successfully!')
 
     if write_to_file:

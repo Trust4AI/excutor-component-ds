@@ -30,10 +30,10 @@ RACE_AND_NATIONALITY_MC_TEMPLATE_PATH = os.path.join(TEMPLATE_PATH,
                                                      MC_PATH)
 
 PATHS = {
-    #'gender_and_sexual_yes_no': GENDER_AND_SEXUAL_ORIENTATION_YES_NO_TEMPLATE_PATH,
+    'gender_and_sexual_yes_no': GENDER_AND_SEXUAL_ORIENTATION_YES_NO_TEMPLATE_PATH,
     'gender_and_sexual_three_reasons': GENDER_AND_SEXUAL_ORIENTATION_THREE_REASONS_TEMPLATE_PATH,
-    'gender_and_sexual_mc': GENDER_AND_SEXUAL_ORIENTATION_MC_TEMPLATE_PATH,
-    'race_and_nationality_yes_no': RACE_AND_NATIONALITY_YES_NO_TEMPLATE_PATH,
+    #'gender_and_sexual_mc': GENDER_AND_SEXUAL_ORIENTATION_MC_TEMPLATE_PATH,
+    #'race_and_nationality_yes_no': RACE_AND_NATIONALITY_YES_NO_TEMPLATE_PATH,
     #'race_and_nationatily_three_reasons': RACE_AND_NATIONALITY_THREE_REASONS_TEMPLATE_PATH,
     #'race_adn_nationality_mc': RACE_AND_NATIONALITY_MC_TEMPLATE_PATH
 }
