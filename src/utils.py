@@ -37,7 +37,7 @@ def generate_prompt_api(templates, mode='random', n=5):
 def list_to_csv(results, file_name):
     if not os.path.exists(os.path.dirname(file_name)):
         os.makedirs(os.path.dirname(file_name))
-    with open(file_name, 'w') as f:
+    with open(file_name, 'w', encoding='utf-8') as f:
         f.write(
             'template_id;bias_type;number_of_groups;group/s implicated;template_type;generated_prompt;expected_result\n')
         for result in results:
@@ -50,7 +50,7 @@ def list_to_csv(results, file_name):
 def list_to_csv2(results, file_name):
     if not os.path.exists(os.path.dirname(file_name)):
         os.makedirs(os.path.dirname(file_name))
-    with open(file_name, 'w') as f:
+    with open(file_name, 'w', encoding='utf-8') as f:
         f.write(
             'template_id;bias_type;number_of_groups;group/s implicated;template_type;generated_prompt;expected_result;response;result;model\n')
         for result in results:
@@ -128,7 +128,7 @@ def process_query(query, model):
         return None
 
 
-def _generate_queries_and_evaluate_bias(queries, model, write_to_file=True, batch_size=1000):
+def _generate_queries_and_evaluate_bias(queries, model, write_to_file=True, batch_size=30000):
     result = []
     print('Processing queries...')
 
