@@ -7,4 +7,4 @@ def main(model="gemma:2b", mode_generator='random', n_generator=5):
     r = _generate_queries_and_evaluate_bias(g, model)
 
 if __name__ == '__main__':
-    main(model="llama3:8b", n_generator=9000)
+    main(model="llama2:7b", n_generator=9000)
